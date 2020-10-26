@@ -19,9 +19,10 @@ can be empty or have an Obstacle or have an Object.
 
 ### The command window shall display the following parameters: 
 <img src="https://github.com/supu2701/Shortest-Route-using-Open-CV/blob/main/Output.PNG" />
-1. Process points 
-2. Total Number of occupied grids 
-3. Coloured occupied grids 
-4. Total Number of coloured occupied grids 
-5. Dictionary keys of planned path 
-6. Coordinates of planned path 
+
+1. Process points
+2. Total Number of occupied grids
+3. Coloured occupied grids
+4. Total Number of coloured occupied grids
+5. Dictionary keys of planned path
+6. Coordinates of planned path
