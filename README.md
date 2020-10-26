@@ -12,12 +12,13 @@ A set of test images, each containing
 2. Obstacles marked as black square
 3. Starting and ending point of route marked in blue boxes.
 
-
+<img src="https://github.com/supu2701/Shortest-Route-using-Open-CV/blob/main/Path_3.jpg" width="400" height= "400" />
 
 The squares are identified by the coordinate (x,y) where x is the column and y is the row to which the square belongs. Each square
 can be empty or have an Obstacle or have an Object.
 
 ### The command window shall display the following parameters: 
+<img src="https://github.com/supu2701/Shortest-Route-using-Open-CV/blob/main/Output.PNG" />
 1. Process points 
 2. Total Number of occupied grids 
 3. Coloured occupied grids 
