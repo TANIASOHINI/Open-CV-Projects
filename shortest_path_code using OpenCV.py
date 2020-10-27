@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import time
+
 from skimage.metrics import structural_similarity as ssim
 
 
@@ -55,52 +56,8 @@ def traversal_window(image, stepSize, windowSize):
             # yield the current window
             yield (x, y, image[y:y + windowSize[1], x:x + windowSize[0]])
 
-def astar(m,startp,endp):
-    w,h = 10,10		# 10x10(blocks) is the dimension of the input images
-    sx,sy = startp 	#Start Point
-    ex,ey = endp 	#End Point
-    #[parent node, x, y, g, f]
-    node = [None,sx,sy,0,abs(ex-sx)+abs(ey-sy)]
-    closeList = [node]
-    createdList = {}
-    createdList[sy*w+sx] = node
-    k=0
-    while(closeList):
-        node = closeList.pop(0)
-        x = node[1]
-        y = node[2]
-        l = node[3]+1
-        k+=1
-        #find neighbours
-        if k!=0:
-            neighbours = ((x,y+1),(x,y-1),(x+1,y),(x-1,y))
-        else:
-            neighbours = ((x+1,y),(x-1,y),(x,y+1),(x,y-1))
-        for nx,ny in neighbours:
-            if nx==ex and ny==ey:
-                path = [(ex,ey)]
-                while node:
-                    path.append((node[1],node[2]))
-                    node = node[0]
-                return list(reversed(path))
-            if 0<=nx<w and 0<=ny<h and m[ny][nx]==0:
-                if ny*w+nx not in createdList:
-                    nn = (node,nx,ny,l,l+abs(nx-ex)+abs(ny-ey))
-                    createdList[ny*w+nx] = nn
-                    #adding to closelist ,using binary heap
-                    nni = len(closeList)
-                    closeList.append(nn)
-                    while nni:
-                        i = (nni-1)>>1
-                        if closeList[i][4]>nn[4]:
-                            closeList[i],closeList[nni] = nn,closeList[i]
-                            nni = i
-                        else:
-                            break
-    return []
 
-
-def main(image_filename, obstacles=[]):
+def main(image_filename):
     full_grids = []  # List to store coordinates of occupied grid
     expected_path = {}  # Dictionary to store information regarding path planning
 
@@ -108,7 +65,7 @@ def main(image_filename, obstacles=[]):
     image = cv2.imread(image_filename)
     (winW, winH) = (60, 60)  # Size of individual cropped images
 
-    obstacles = []  # List to store barrier (black tiles)
+    barrier = []  # List to store barrier (black tiles)
     index = [1, 1]
     blank_image = np.zeros((60, 60, 3), np.uint8)
     list_images = [[blank_image for i in range(10)] for i in range(10)]  # array of list of images
@@ -135,10 +92,9 @@ def main(image_filename, obstacles=[]):
             maze[index[1] - 1][index[0] - 1] = 1
             full_grids.append(tuple(index))
 
-
         ##########     Check if grids are black and add them to barrier list   ###########
         if (any(i <= 20 for i in average_color)):
-            obstacles.append(tuple(index))
+            barrier.append(tuple(index))
 
         cv2.imshow("Window", clone)
         cv2.waitKey(1)
@@ -151,20 +107,17 @@ def main(image_filename, obstacles=[]):
             index[1] = 1
 
     ####################       Write a statement to print the full_grids      ################
-    print("Process points : ")
+    print("Full Grids : ")
     print(full_grids)
 
     # Printing other info
     print("Total no of Occupied Grids : ")
     print(len(full_grids))
-    print("Obstacles : ")
-    print(obstacles)
-
 
     # First part done
     ##############################################################################
 
-    list_colored_grids = [n for n in full_grids if n not in obstacles]  # Grids with objects (not black barrier)
+    list_colored_grids = [n for n in full_grids if n not in barrier]  # Grids with objects (not black barrier)
 
     print("Colored Occupied Grids : ")
     print(list_colored_grids)
@@ -181,13 +134,17 @@ def main(image_filename, obstacles=[]):
             image = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
             image2 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             s = ssim(image, image2)
+
+            ########   Check if ssim score is greater than 0.9 or not ########
             if s > 0.9:
-                result = astar(maze, (startimage[0] - 1, startimage[1] - 1), (grid[0] - 1, grid[1] - 1))
+                result = shortest_path_algorithm(maze, (startimage[0] - 1, startimage[1] - 1),
+                                                 (grid[0] - 1, grid[1] - 1))
                 list2 = []
-                for t in result:
-                    x, y = t[0], t[1]
-                    list2.append(tuple((x + 1, y + 1)))  # Contains min path + startimage + endimage
-                    result = list(list2[1:-1])  # Result contains the minimum path required
+                if result:
+                    for t in result:
+                        x, y = t[0], t[1]
+                        list2.append(tuple((x + 1, y + 1)))
+                        result = list(list2[1:-1])
 
 
                 if not result:  # If no path is found;
@@ -203,13 +160,14 @@ def main(image_filename, obstacles=[]):
 
     ##############  Write a statement to print the expected_path ###################
 
-    print("Excepted path: ")
-    print(expected_path)
+    print("Expected path: ")
+    print(dict(expected_path))
 
     return full_grids, expected_path
 
 
 ############  Second Part done                            ################
+
 
 if __name__ == '__main__':
     # change filename to check for other images
@@ -217,5 +175,5 @@ if __name__ == '__main__':
 
     main(image_filename)
 
-    cv2.waitKey(10000)
+    cv2.waitKey(0)
     cv2.destroyAllWindows()
