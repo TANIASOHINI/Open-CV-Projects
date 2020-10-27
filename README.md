@@ -18,7 +18,7 @@ The squares are identified by the coordinate (x,y) where x is the column and y i
 can be empty or have an Obstacle or have an Object.
 
 ### The command window shall display the following parameters: 
-<img src="https://github.com/supu2701/Shortest-Route-using-Open-CV/blob/main/Output.PNG" />
+<img src="https://github.com/supu2701/Shortest-Route-using-Open-CV/blob/main/Path_3.PNG" />
 
 1. Process points
 2. Total Number of occupied grids
