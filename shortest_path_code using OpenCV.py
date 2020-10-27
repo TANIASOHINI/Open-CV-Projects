@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import time
-
 from skimage.metrics import structural_similarity as ssim
 
 
@@ -53,8 +52,7 @@ def traversal_window(image, stepSize, windowSize):
     ###############  slide a window across the image      #############################
     for y in range(0, image.shape[0], stepSize):
         for x in range(0, image.shape[1], stepSize):
-            # yield the current window
-            yield (x, y, image[y:y + windowSize[1], x:x + windowSize[0]])
+            yield (x, y, image[y:y + windowSize[1], x:x + windowSize[0]])  # This yield the current window
 
 
 def main(image_filename):
@@ -88,13 +86,15 @@ def main(image_filename):
         #	print (average_color)
 
         ##########     Check if grids are colored ie not majorly white and termed these grids as full_grids ######
-        if (any(i <= 240 for i in average_color)):
-            maze[index[1] - 1][index[0] - 1] = 1
-            full_grids.append(tuple(index))
+
+        if (any(i <= 240 for i in average_color)):  # Checking if grids are colored or not
+            maze[index[1] - 1][index[0] - 1] = 1  # set the corresponding integer in the maze as 1
+            full_grids.append(tuple(index))  # The grids are termed as occupied_grids
 
         ##########     Check if grids are black and add them to barrier list   ###########
-        if (any(i <= 20 for i in average_color)):
-            barrier.append(tuple(index))
+
+        if (any(i <= 20 for i in average_color)):  # Checking if grids are black or not
+            barrier.append(tuple(index))  # Adding those grids to barrier list
 
         cv2.imshow("Window", clone)
         cv2.waitKey(1)
@@ -108,7 +108,7 @@ def main(image_filename):
 
     ####################       Write a statement to print the full_grids      ################
     print("Full Grids : ")
-    print(full_grids)
+    print(full_grids)  # Printing the full_grids
 
     # Printing other info
     print("Total no of Occupied Grids : ")
@@ -137,15 +137,20 @@ def main(image_filename):
 
             ########   Check if ssim score is greater than 0.9 or not ########
             if s > 0.9:
+
+                ########   Find the min path from the startimage to this similar image u=by calling shortest_path_algorithm function  ########
+
+                # shortest_path_algorithm function is called and it is stored in result
                 result = shortest_path_algorithm(maze, (startimage[0] - 1, startimage[1] - 1),
                                                  (grid[0] - 1, grid[1] - 1))
                 list2 = []
                 if result:
                     for t in result:
                         x, y = t[0], t[1]
-                        list2.append(tuple((x + 1, y + 1)))
-                        result = list(list2[1:-1])
-
+                        list2.append(tuple((x + 1, y + 1)))  # This list contains shortest path, startimage, endimage
+                        result = list(list2[1:-1])  # Result contains the minimum path required
+                if not result:  # If no path is found
+                    result = list(["NO PATH", [], 0])  # When no path is found, then this list contains "NO PATH"
 
                 if not result:  # If no path is found;
                     expected_path[startimage] = list(["NO PATH", [], 0])
@@ -161,7 +166,7 @@ def main(image_filename):
     ##############  Write a statement to print the expected_path ###################
 
     print("Expected path: ")
-    print(dict(expected_path))
+    print(dict(expected_path))  # Printing the expected_path
 
     return full_grids, expected_path
 
