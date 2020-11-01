@@ -176,7 +176,7 @@ def main(image_filename):
 
 if __name__ == '__main__':
     # change filename to check for other images
-    image_filename = "Path_4.jpg"  ### Add the image filename to the image_filename
+    image_filename = "main_image.jpg"  ### Add the image filename to the image_filename
 
     main(image_filename)
 
