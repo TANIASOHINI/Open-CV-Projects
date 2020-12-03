@@ -75,9 +75,9 @@ res = cv2.merge((b, g, r))
 
 ## ⭕Tech stack guides⭕
 
-✔ [Python 3 guide] (https://www.python.org/doc/):
-✔ [Open CV] (https://docs.opencv.org/):
-✔ [Git and Github] (https://guides.github.com/introduction/):
+- ✔ [Python 3 guide] (https://www.python.org/doc/):
+- ✔ [Open CV] (https://docs.opencv.org/):
+- ✔ [Git and Github] (https://guides.github.com/introduction/):
 
 ## 🛑How to contribute?💥
 
