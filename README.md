@@ -1,6 +1,6 @@
 # ⭐💥 Image Processing Projects 💥⭐
 
-## 🛑Project1 1: Obstacle detection and shortest Route Planning🛑
+## 🛑Project 1: Obstacle detection and shortest Route Planning🛑
 Identifies the shortest path from the starting to end point using Image processing techniques using Open CV. This project aims at developing a mechanism to identify the shortest path leading to the destination and avoiding any kind of obstacle during robot’s traversal route. The file shortest_path_code using OpenCV and Shortest-Route(Detailed) contains python code consisting of required functions to detect the shortest route between the origin and the destination(denoted by blue box) as well as detect presence of obstacles if any(denoted by black boxes), on the path supposed to be traversed by any simulated bot.
 The code checks for different sample cases uploaded in Test Images file. The file labelled delatiled shows the output in a detailed and self explinable manner consisting of the routes coordinates, obstacle coordinates, path lenght and the actual path taken.
 
