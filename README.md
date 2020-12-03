@@ -122,3 +122,9 @@ res = cv2.merge((b, g, r))
 ###### At this point, you are ready to make a pull request to the original repository. Make PRs' to the develop branch only!
 
 ###### Now navigate to your forked repository, and press the “New pull request” button on your left-hand side of the page.
+
+
+## Interesting? Star⭐ this Repo😊
+
+# Happy Learning💯 Happy Developing👍
+
